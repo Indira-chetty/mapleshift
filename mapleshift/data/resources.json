@@ -1,0 +1,8 @@
+[
+ {"title":"Canada Border Services Agency (CBSA)","url":"https://www.cbsa-asfc.gc.ca","what":"Import rules, customs notices, and how to find a licensed customs broker","icon":"shield-check"},
+ {"title":"CBSA customs notices","url":"https://www.cbsa-asfc.gc.ca/publications/cn-ad/menu-eng.html","what":"How the counter-tariffs are applied at the border","icon":"file-text"},
+ {"title":"Canadian Society of Customs Brokers","url":"https://www.cscb.ca","what":"Find a customs broker who can confirm your product codes","icon":"users"},
+ {"title":"Finance Canada: official product list","url":"https://www.canada.ca/en/department-finance/news/2026/08/list-of-products-from-the-united-states-subject-to-counter-tariffs-effective-september-8-2026.html","what":"The list every rate in this tool comes from","icon":"list-checks"},
+ {"title":"Support for workers and businesses","url":"https://www.canada.ca/en/department-finance/news/2026/08/support-for-canadian-workers-and-businesses-affected-by-us-tariffs.html","what":"Regional Tariff Response Initiative, BDC programs and other supports","icon":"hand-coins"},
+ {"title":"Trade Commissioner Service","url":"https://www.tradecommissioner.gc.ca","what":"Free government advisors who can help you find non-US suppliers and markets","icon":"globe"}
+]

@@ -1,0 +1,114 @@
+{% extends "base.html" %}
+{% block title %}See what tariffs cost you{% endblock %}
+{% block main %}
+<div class="wrap">
+
+  <section class="hero">
+    <div>
+      <h1><span>See what tariffs cost you.</span><span>Find what you can claim back.</span></h1>
+      <p class="lead">Drop in any supplier invoice. MapleShift flags every line that carries Canada's counter-tariff, shows the surtax, and tells you what to ask your broker. Answers in your language.</p>
+      <div class="btn-row">
+        <a class="btn btn-primary" href="{{ url_for('check') }}"><i data-lucide="scan-line" class="icon"></i>Check an invoice</a>
+        <form method="post" action="{{ url_for('check_sample') }}">
+          <input type="hidden" name="sample" value="quickbooks">
+          <button class="btn btn-ghost" type="submit"><i data-lucide="play" class="icon"></i>Try a sample</button>
+        </form>
+      </div>
+      <p class="assure"><i data-lucide="badge-check" class="icon"></i>Every rate comes from the official Finance Canada list. No invented numbers.</p>
+    </div>
+
+    <figure class="invoice" aria-label="Example: a dairy invoice checked by MapleShift" style="margin:0">
+      <div class="invoice-head">
+        <div><strong>Great Lakes Dairy Co.</strong><span class="muted">Toledo, Ohio to Maple &amp; Crumb Bakery, Toronto</span></div>
+        <div style="text-align:right"><strong>GLD-5521</strong><span class="muted">Sept 9, 2026</span></div>
+      </div>
+      <div class="inv-line">
+        <span>Aged cheddar cheese blocks</span><span class="amt hit">+$868.00</span>
+        <span class="meta"><span class="tariff-badge">TARIFF</span><span class="origin">U.S. · on tariff list</span><a class="src" href="{{ list_url }}" target="_blank" rel="noopener"><i data-lucide="link" class="icon"></i>0406.90.11 at 25%</a></span><span></span>
+      </div>
+      <div class="inv-line">
+        <span>Wildflower honey, bulk pails</span><span class="amt hit">+$798.00</span>
+        <span class="meta"><span class="tariff-badge">TARIFF</span><span class="origin">U.S. · on tariff list</span><a class="src" href="{{ list_url }}" target="_blank" rel="noopener"><i data-lucide="link" class="icon"></i>0409.00.00 at 50%</a></span><span></span>
+      </div>
+      <div class="inv-line">
+        <span>Mozzarella, shredded 5 kg</span><span class="amt hit">+$378.00</span>
+        <span class="meta"><span class="tariff-badge">TARIFF</span><span class="origin">U.S. · on tariff list</span><a class="src" href="{{ list_url }}" target="_blank" rel="noopener"><i data-lucide="link" class="icon"></i>0406.10 at 25%</a></span><span></span>
+      </div>
+      <div class="inv-line">
+        <span>Unsalted butter, 25 kg case</span><span class="amt">$0.00</span>
+        <span class="meta"><span class="origin">U.S. · not listed</span></span><span></span>
+      </div>
+      <div class="inv-line">
+        <span>Cream cheese bricks</span><span class="amt">$0.00</span>
+        <span class="meta"><span class="origin">Made in Mexico · surtax doesn't apply</span></span><span></span>
+      </div>
+      <div class="inv-total">
+        <span class="label">Counter-tariff surtax on this invoice, estimate</span>
+        <span class="money">$2,044</span>
+      </div>
+    </figure>
+  </section>
+
+  <section class="section" style="padding-top:8px">
+    <div class="pillars">
+      <div class="pillar"><i data-lucide="scan-search" class="icon"></i><h3>See it</h3>
+        <p>Every tariffed line, flagged. Upload a supplier invoice or a QuickBooks or Xero export and see the surtax line by line.</p></div>
+      <div class="pillar"><i data-lucide="folder-check" class="icon"></i><h3>Recover it</h3>
+        <p>A claim pack ready for your broker: the tariffed lines, the codes, the documents to gather, and the questions to ask.</p></div>
+      <div class="pillar"><i data-lucide="languages" class="icon"></i><h3>Understand it</h3>
+        <p>Plain answers quoted from official sources, and a report in English, French, Punjabi or Chinese.</p></div>
+    </div>
+  </section>
+
+  <section class="story" aria-label="Customer story">
+    <img src="{{ url_for('static', filename='img/owner-bakery.jpg') }}" alt="A bakery owner checking an invoice on a tablet in her Toronto bakery">
+    <div class="story-body">
+      <span class="money">$2,044</span>
+      <p>A family bakery in Etobicoke found this much counter-tariff surtax on one dairy invoice. Three lines were on the list. The butter wasn't, and the cream cheese was made in Mexico, so neither pays. MapleShift sorted it out in under a minute.</p>
+      <p class="by">Sample invoice. Real Finance Canada rates.</p>
+    </div>
+  </section>
+
+  <section class="section">
+    <div class="section-head">
+      <h2>From invoice to answer in three steps</h2>
+      <p class="muted">No customs knowledge needed.</p>
+    </div>
+    <ol class="how" style="padding:0;margin:0">
+      <li><h3>Drop in an invoice</h3><p class="muted" style="margin:0">A supplier invoice, or a QuickBooks or Xero export. CSV or Excel.</p></li>
+      <li><h3>We check every line</h3><p class="muted" style="margin:0">Matched to the official list, checked for where it was made, priced in Canadian dollars.</p></li>
+      <li><h3>Take it to your broker</h3><p class="muted" style="margin:0">A printable claim pack with the questions to ask and the documents to bring.</p></li>
+    </ol>
+  </section>
+
+  <section class="section trust" style="padding-top:0">
+    <div>
+      <h2>Built so it can't make up a number</h2>
+      <p class="muted">Rates come straight from the government list and the math is plain code. AI never touches a dollar figure. When we're not sure, we say so, and tell you who can answer.</p>
+      <a class="btn btn-ghost btn-sm" href="{{ url_for('ask') }}"><i data-lucide="message-square-text" class="icon"></i>Ask a question about the tariffs</a>
+    </div>
+    <ul class="legend">
+      <li><span class="pill Verified"><i data-lucide="shield-check" class="icon"></i>Verified</span><span>Exact tariff code match from your invoice.</span></li>
+      <li><span class="pill Estimated"><i data-lucide="gauge" class="icon"></i>Estimated</span><span>Matched by description. Confirm the code with your broker.</span></li>
+      <li><span class="pill Needs"><i data-lucide="triangle-alert" class="icon"></i>Needs review</span><span>Something's missing. We show what, and who to ask.</span></li>
+    </ul>
+  </section>
+</div>
+
+<section class="section vision">
+  <div class="wrap">
+    <div class="section-head">
+      <h2>Where MapleShift goes next</h2>
+      <p>Today you check one invoice. Next, small businesses stop facing tariffs alone.</p>
+    </div>
+    <div class="grid g3">
+      <div class="card"><div class="icon-bubble"><i data-lucide="plug" class="icon"></i></div>
+        <h3>Connected books</h3><p style="margin:0">QuickBooks and Xero checked automatically, every time a bill comes in.</p></div>
+      <div class="card"><div class="icon-bubble"><i data-lucide="file-stack" class="icon"></i></div>
+        <h3>Customs entry matching</h3><p style="margin:0">Match purchases to CARM entries to find surtax your broker can try to recover.</p></div>
+      <div class="card"><div class="icon-bubble"><i data-lucide="users-round" class="icon"></i></div>
+        <h3>Buy together</h3><p style="margin:0">When hundreds of shops rely on the same U.S. supplier, pooled data shows it, so they can switch as a group.</p></div>
+    </div>
+  </div>
+</section>
+{% endblock %}

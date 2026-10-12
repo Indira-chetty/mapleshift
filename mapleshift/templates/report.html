@@ -1,0 +1,79 @@
+{% extends "base.html" %}
+{% block title %}{{ tr('report_title') }}{% endblock %}
+{% block main %}
+<div class="wrap" style="max-width:960px">
+  <div class="no-print" style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-bottom:16px">
+    <div class="lang-switch" aria-label="Language">
+      <i data-lucide="languages" class="icon" style="align-self:center;color:var(--muted)"></i>
+      {% for code, label in langs.items() %}
+      <a href="{{ url_for('report', lang=code) }}" class="{{ 'on' if code==lang }}" lang="{{ code }}">{{ label }}</a>
+      {% endfor %}
+    </div>
+    <button class="btn btn-primary" onclick="window.print()"><i data-lucide="printer" class="icon"></i>{{ tr('print') }}</button>
+  </div>
+
+  <div class="card stack">
+    <div style="display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;align-items:flex-start">
+      <div>
+        <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px"><span class="brand" style="font-size:1.2rem">{% include "_logo.html" %}MapleShift</span></div>
+        <h1 style="font-size:1.9rem">{{ tr('report_title') }}</h1>
+        <p class="muted" style="margin:0">{{ name }}. {{ today }}</p>
+      </div>
+    </div>
+    {% if tr('mt_note') %}<div class="note small"><i data-lucide="languages" class="icon"></i>{{ tr('mt_note') }}</div>{% endif %}
+
+    <div class="grid g3">
+      <div class="stat"><div class="label">{{ tr('invoice_total') }}</div><div class="num">{{ s.invoice_total|money }}</div></div>
+      <div class="stat"><div class="label">{{ tr('confirmed_extra') }}</div><div class="num red">{{ s.confirmed_extra|money }}</div>
+        <div class="muted small">{{ tr('of_invoice', pct=s.share_pct) }}</div></div>
+      <div class="stat"><div class="label">{{ tr('possible_extra') }}</div><div class="num amber">{{ s.possible_extra|money }}</div>
+        <div class="muted small">{{ tr('items_affected') }}: {{ s.n_affected }} / {{ s.n_items }}</div></div>
+    </div>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h2>{{ tr('checklist') }}</h2>
+    <ul class="checklist">
+      {% for st in steps %}
+      <li><span class="box" aria-hidden="true"></span>
+        <div>{{ tr(st.key, **st.vals) }}
+          {% if st['items'] %}<div class="why">{{ st['items']|join(', ') }}</div>{% endif %}
+          <div style="margin-top:4px"><span class="src"><i data-lucide="landmark" class="icon"></i>{{ st.source }}</span></div></div></li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <div class="table-scroll">
+    <table>
+      <thead><tr><th>{{ tr('item') }}</th><th>{{ tr('made_in') }}</th><th>{{ tr('code') }}</th><th class="num">{{ tr('rate') }}</th>
+        <th class="num">{{ tr('value') }}</th><th class="num">{{ tr('extra') }}</th><th>{{ tr('confidence') }}</th></tr></thead>
+      <tbody>
+      {% for i in items %}
+      {% set cls = 'Needs' if i.confidence=='Needs review' else i.confidence %}
+      <tr class="row-{{ i.effect }}">
+        <td><strong>{{ i.description }}</strong><div class="why effect {{ i.effect }}">{{ tr(i.effect) }}</div></td>
+        <td>{{ i.made_in or '—' }}</td>
+        <td>{{ i.match_code or '—' }}</td>
+        <td class="num">{{ (i.rate|int ~ '%') if i.rate else '0%' }}</td>
+        <td class="num">{{ i.value_cad|money }}</td>
+        <td class="num"><strong>{{ i.extra_cad|money }}</strong></td>
+        <td><span class="pill {{ cls }}">{{ tr(i.confidence) }}</span></td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    </div>
+    <p class="muted small" style="margin:12px 0 0">{{ tr('rate_note', list=list_name, fx=fx, fx_note=fx_note) }}</p>
+  </div>
+
+  <div class="card" style="margin-top:16px">
+    <h2>{{ tr('sources') }}</h2>
+    {% for p in sources %}
+    <p class="small" style="margin-bottom:10px"><strong>{{ p.id }}</strong>: {{ p.text }}<br>
+      <a href="{{ p.url }}" target="_blank" rel="noopener">{{ p.source }}</a></p>
+    {% endfor %}
+    <p class="small" style="margin:0"><strong>{{ tr('disclaimer') }}</strong></p>
+  </div>
+</div>
+{% endblock %}

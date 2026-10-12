@@ -1,0 +1,11 @@
+item,description,hs_code,quantity,unit_price,currency,made_in,supplier
+1,Pine lumber 2x4 (sawn),4407.11.00,400,6.40,USD,United States,Pacific Northwest Timber
+2,Spruce framing lumber,4407.12.00,250,7.10,USD,Canada,Pacific Northwest Timber
+3,Birch plywood sheets 3/4 in,4412.33.00,80,58.00,USD,United States,Great Lakes Panel Co.
+4,Drywall sheets 4x8,6809.11.00,150,14.50,USD,United States,Gypsum Supply USA
+5,Rebar coils (ribbed),7213.10.00,6,820.00,USD,United States,Midwest Steel Distributors
+6,Galvanized steel sheet,7210.30.00,20,190.00,USD,,Midwest Steel Distributors
+7,Vinyl flooring rolls,3918.10.90,40,96.00,USD,United States,FloorMart Wholesale
+8,Nylon carpet (machine tufted),5703.29.10,30,120.00,USD,United States,FloorMart Wholesale
+9,Cordless drill sets,8467.21.00,10,210.00,USD,China,ToolDepot USA
+10,Construction adhesive tubes,,120,7.50,USD,United States,BuildChem Supply

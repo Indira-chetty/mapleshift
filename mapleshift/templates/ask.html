@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+{% block title %}Ask about the tariffs{% endblock %}
+{% block main %}
+<div class="wrap" style="max-width:820px">
+  <div class="page-head">
+    <h1>Ask about the tariffs</h1>
+    <p>Answers come only from official Government of Canada sources, quoted with a link. If the sources don't cover it, we say so.</p>
+  </div>
+
+  <div class="card">
+    <form method="get" action="{{ url_for('ask') }}" style="display:flex;gap:8px">
+      <label for="q" class="sr-only" style="position:absolute;left:-9999px">Your question</label>
+      <input type="text" id="q" name="q" value="{{ q }}" placeholder="e.g. Do the tariffs apply to goods made in Mexico?">
+      <button class="btn btn-primary" type="submit"><i data-lucide="send" class="icon"></i>Ask</button>
+    </form>
+    <div class="chips" style="margin-top:14px">
+      {% for ex in ['When do the counter-tariffs start?', 'Does it matter where my product was made?', 'Are goods already shipped exempt?', 'What help is there for small businesses?', 'Is honey on the list?'] %}
+      <a class="chip" href="{{ url_for('ask', q=ex) }}">{{ ex }}</a>
+      {% endfor %}
+    </div>
+  </div>
+
+  {% if answer %}
+  <div class="card stack" style="margin-top:16px">
+    {% if answer.products %}
+      <h2>On the official list</h2>
+      {% for p in answer.products %}
+      <p style="margin:0"><a class="src" href="{{ list_url }}" target="_blank" rel="noopener"><i data-lucide="link" class="icon"></i>{{ p.hs_code }}</a>
+        <strong>{{ p.rate|int }}%</strong>: {{ p.description }}</p>
+      {% endfor %}
+      <a class="btn btn-ghost btn-sm" href="{{ url_for('check', tab='quick') }}"><i data-lucide="calculator" class="icon"></i>Calculate the cost for your item</a>
+    {% endif %}
+
+    {% if answer.passages %}
+      <h2>What the official sources say</h2>
+      {% for p in answer.passages %}
+      <div>
+        <p class="quote">{{ p.text }}</p>
+        <a class="src" href="{{ p.url }}" target="_blank" rel="noopener"><i data-lucide="landmark" class="icon"></i>{{ p.source }}, {{ p.id }}</a>
+      </div>
+      {% endfor %}
+    {% elif not answer.products %}
+      <div class="note"><i data-lucide="info" class="icon"></i>
+        <div>The official sources we use don't answer this. Rather than guess, we suggest asking an expert.
+        <div style="margin-top:8px"><a class="btn btn-ghost btn-sm" href="{{ url_for('help_page') }}"><i data-lucide="life-buoy" class="icon"></i>Get expert help</a></div></div></div>
+    {% endif %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,188 @@
+{% extends "base.html" %}
+{% block title %}Results{% endblock %}
+{% block main %}
+<div class="wrap">
+  <div class="page-head" style="display:flex;justify-content:space-between;align-items:flex-end;gap:16px;flex-wrap:wrap">
+    <div>
+      <h1>Your invoice check</h1>
+      <p style="margin:0">{{ name }}: {{ s.n_items }} items checked against the {{ list_name }}.</p>
+    </div>
+    <div class="btn-row">
+      <a class="btn btn-ghost" href="{{ url_for('reset') }}"><i data-lucide="rotate-ccw" class="icon"></i>Check another invoice</a>
+      <a class="btn btn-primary" href="{{ url_for('report') }}"><i data-lucide="folder-check" class="icon"></i>Open claim pack</a>
+    </div>
+  </div>
+
+  {% for p in problems %}<div class="alert"><i data-lucide="circle-alert" class="icon"></i>{{ p }}</div>{% endfor %}
+
+  {% if unclear_suppliers|length > 0 and (unclear_suppliers.values()|sum) > 2 %}
+  <div class="card origin-card" style="margin-bottom:16px">
+    <h2>Where do your suppliers' goods come from?</h2>
+    <p class="muted">Your file doesn't say where items were made (accounting exports never do). The surtax only applies to goods made in the US. Answer once per supplier:</p>
+    {% for sup, n in unclear_suppliers.items() %}
+    <form method="post" action="{{ url_for('results_origin_supplier') }}" style="display:flex;gap:10px;align-items:center;flex-wrap:wrap;padding:10px 0;border-top:1px solid var(--line)">
+      <input type="hidden" name="supplier" value="{{ sup }}">
+      <strong style="min-width:220px">{{ sup }}</strong><span class="muted small">{{ n }} item(s)</span>
+      <select name="made_in" aria-label="Where {{ sup }}'s goods are made" style="width:auto">
+        <option value="United States">Made in the US</option><option value="Mexico">Mexico</option>
+        <option value="Canada">Canada</option><option value="China">China</option><option value="Other">Other</option>
+      </select>
+      <button class="btn btn-primary btn-sm" type="submit">Apply</button>
+    </form>
+    {% endfor %}
+  </div>
+  {% endif %}
+
+  <!-- Big numbers -->
+  <div class="grid g4">
+    <div class="card stat lead"><div class="label"><i data-lucide="receipt" class="icon"></i>Surtax on this invoice</div>
+      <div class="num red">{{ s.confirmed_extra|money }}</div><div class="muted small">Estimate, {{ s.share_pct }}% of the invoice</div></div>
+    <div class="card stat"><div class="label"><i data-lucide="circle-help" class="icon"></i>Could also apply</div>
+      <div class="num amber">{{ s.possible_extra|money }}</div><div class="muted small">Needs an answer before it counts</div></div>
+    <div class="card stat"><div class="label"><i data-lucide="sheet" class="icon"></i>Invoice total</div>
+      <div class="num">{{ s.invoice_total|money }}</div><div class="muted small">Canadian dollars</div></div>
+    <div class="card stat"><div class="label"><i data-lucide="flag" class="icon"></i>Lines flagged</div>
+      <div class="num">{{ s.n_affected }} <span class="muted" style="font-size:1rem;font-weight:400;font-family:var(--body)">of {{ s.n_items }}</span></div>
+      <div class="muted small">{{ s.n_at_risk }} to check, {{ s.n_clear }} clear</div></div>
+  </div>
+
+  {% if s.confirmed_extra > 0 %}
+  <div class="card recover" style="margin-top:16px">
+    <div class="grid g2" style="align-items:start;gap:32px">
+      <div>
+        <h2><i data-lucide="folder-check" class="icon" style="width:26px;height:26px;color:var(--saved)"></i>Recover it</h2>
+        <p class="muted">Some or all of this surtax may be recoverable. Whether it is depends on details only your broker can confirm.</p>
+        <div class="money">{{ s.confirmed_extra|money }}</div>
+        <p class="muted small">Surtax to review with your broker, across {{ s.n_badged }} tariffed line{{ 's' if s.n_badged != 1 }}. Estimate.</p>
+        <a class="btn btn-primary btn-sm" href="{{ url_for('report') }}"><i data-lucide="printer" class="icon"></i>Print the claim pack</a>
+      </div>
+      <div>
+        <h3>Questions to ask your broker</h3>
+        <ul class="small">
+          <li>Were we the importer of record? Usually only the importer can ask for money back.</li>
+          <li>Were any of these goods already shipped before Sept 8, 2026? Goods in transit on that date are exempt.</li>
+          <li>Does a remission order or relief program cover any of these items?</li>
+          <li>If we export a product made with these goods, can we claim a drawback?</li>
+        </ul>
+        <p class="small muted" style="margin:0">Bring: the supplier invoices, proof of origin, and the customs entry for each shipment.</p>
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  <!-- Biggest costs -->
+  {% if chart %}
+  {% set top = chart[0].extra_cad %}
+  <div class="card" style="margin-top:16px">
+    <h2>Where the surtax comes from</h2>
+    {% for i in chart %}
+    <div class="bar">
+      <span>{{ i.description }}</span>
+      <div class="bar-track"><div class="bar-fill {{ i.effect }}" style="width:{{ (i.extra_cad / top * 100)|round(1) }}%"></div></div>
+      <strong>{{ i.extra_cad|money }}</strong>
+    </div>
+    {% endfor %}
+    <p class="muted small" style="margin:8px 0 0">Red: on the list and made in the U.S. Grey: could apply, needs an answer.</p>
+  </div>
+  {% endif %}
+
+  <!-- Item table -->
+  <div class="card" style="margin-top:16px">
+    <h2>Item by item</h2>
+    <p class="muted small">USD converted at {{ fx }} ({{ fx_note }}). Shows the counter-tariff only: regular duty, GST, freight and brokerage are not included.</p>
+    <div class="table-scroll">
+    <table>
+      <thead><tr><th>Item</th><th>Made in</th><th>Tariff item</th><th class="num">Rate</th><th class="num">Value (CAD)</th><th class="num">Surtax</th><th>How sure</th></tr></thead>
+      <tbody>
+      {% for i in items %}
+      {% set cls = 'Needs' if i.confidence=='Needs review' else i.confidence %}
+      <tr class="row-{{ i.effect }}" id="line-{{ i.line }}">
+        <td>
+          <strong>{{ i.description }}</strong>{% if i.tariff_badge %} <span class="tariff-badge" title="U.S. origin, on the counter-tariff list">TARIFF</span>{% endif %}
+          <div class="why">{{ i.supplier }}</div>
+          <div class="why"><span class="effect {{ i.effect }}">{{ {'affected':'Affected','at_risk':'Check needed','not_affected':'Not affected'}[i.effect] }}</span>: {{ i.reason }}</div>
+
+          {% if i.needs_origin_question %}
+          <details class="tool" open><summary><i data-lucide="map-pin" class="icon" style="width:16px;height:16px"></i>Where was this made?</summary>
+            <form class="tool-body" method="post" action="{{ url_for('results_origin') }}">
+              <input type="hidden" name="line" value="{{ i.line }}">
+              <p class="small" style="margin-bottom:10px">The surtax only applies to goods that count as made in the US. Where it was shipped from doesn't decide it.</p>
+              <div class="field"><label for="m{{ i.line }}">Country where it was made</label>
+                <select id="m{{ i.line }}" name="made_in">
+                  <option value="">I don't know</option>
+                  {% for c in ['United States','Mexico','Canada','China','Other'] %}<option>{{ c }}</option>{% endfor %}
+                </select></div>
+              <div class="field"><label for="c{{ i.line }}">If made outside the US, was it changed a lot in the US (assembled, processed, re-made)?</label>
+                <select id="c{{ i.line }}" name="changed"><option value="no">No, or not sure</option><option value="yes">Yes</option></select></div>
+              <button class="btn btn-primary btn-sm" type="submit">Update result</button>
+            </form>
+          </details>
+          {% endif %}
+
+          {% if i.effect in ['affected','at_risk'] and i.extra_cad > 0 %}
+          <details class="tool"><summary><i data-lucide="arrow-left-right" class="icon" style="width:16px;height:16px"></i>Compare with a non-US supplier</summary>
+            <div class="tool-body compare-tool" data-value="{{ i.value_cad }}" data-extra="{{ i.extra_cad }}">
+              <label for="alt{{ i.line }}" class="small">Non-US price difference</label>
+              <select id="alt{{ i.line }}" class="alt-pct">
+                <option value="0">Same price</option><option value="5">5% more expensive</option>
+                <option value="10" selected>10% more expensive</option><option value="20">20% more expensive</option>
+                <option value="30">30% more expensive</option>
+              </select>
+              <div class="compare">
+                <div><span class="small muted">US supplier</span><strong class="us-total"></strong><span class="small muted">incl. {{ i.extra_cad|money }} tariff</span></div>
+                <div><span class="small muted">Non-US supplier</span><strong class="alt-total"></strong><span class="small muted">no counter-tariff</span></div>
+              </div>
+              <div class="saving"></div>
+            </div>
+          </details>
+          {% endif %}
+
+          {% if i.advice %}
+          <details class="tool advice"><summary><i data-lucide="life-buoy" class="icon" style="width:16px;height:16px"></i>Expert advice: what's missing and who to ask{% if i.advice.at_stake > 0 %} ({{ i.advice.at_stake|money }} at stake){% endif %}</summary>
+            <div class="tool-body">
+              <p class="small"><strong>What we don't know</strong></p>
+              <ul class="small">{% for m in i.advice.missing %}<li>{{ m }}</li>{% endfor %}</ul>
+              <p class="small"><strong>Who can answer it</strong></p>
+              <ul class="small">{% for w in i.advice.who %}<li><strong>{{ w[0] }}</strong>: {{ w[1] }}</li>{% endfor %}</ul>
+              <p class="small"><strong>Have ready</strong>: {{ i.advice.docs|join(', ') }}</p>
+              <p class="small"><strong>Message to your supplier</strong></p>
+              <textarea class="copy-box" readonly rows="3">{{ i.advice.to_supplier }}</textarea>
+              <p class="small"><strong>Question for a customs broker</strong></p>
+              <textarea class="copy-box" readonly rows="3">{{ i.advice.to_broker }}</textarea>
+              <a class="btn btn-ghost btn-sm" style="margin-top:8px" href="{{ url_for('help_page', item=i.description) }}"><i data-lucide="search" class="icon"></i>Find an expert near you</a>
+            </div>
+          </details>
+          {% endif %}
+        </td>
+        <td>{{ i.made_in or '—' }}</td>
+        <td>{% if i.match_code %}<a class="src" href="{{ list_url }}" target="_blank" rel="noopener" title="{{ i.match_desc }}"><i data-lucide="link" class="icon"></i>{{ i.match_code }}</a>
+            {% elif i.hs_code %}<span class="muted small">{{ i.hs_code }} (not listed)</span>{% else %}<span class="muted small">no match</span>{% endif %}</td>
+        <td class="num">{{ (i.rate|int ~ '%') if i.rate else '0%' }}</td>
+        <td class="num">{{ i.value_cad|money }}</td>
+        <td class="num"><strong class="effect {{ i.effect }}">{{ i.extra_cad|money }}</strong></td>
+        <td><span class="pill {{ cls }}"><i data-lucide="{{ 'shield-check' if cls=='Verified' else 'gauge' if cls=='Estimated' else 'triangle-alert' }}" class="icon"></i>{{ i.confidence }}</span></td>
+      </tr>
+      {% endfor %}
+      </tbody>
+    </table>
+    </div>
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+  const fmt = n => '$' + n.toLocaleString('en-CA', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+  document.querySelectorAll('.compare-tool').forEach(box => {
+    const value = +box.dataset.value, extra = +box.dataset.extra, sel = box.querySelector('.alt-pct');
+    const update = () => {
+      const us = value + extra, alt = value * (1 + (+sel.value) / 100), diff = us - alt;
+      box.querySelector('.us-total').textContent = fmt(us);
+      box.querySelector('.alt-total').textContent = fmt(alt);
+      const s = box.querySelector('.saving');
+      s.textContent = diff > 0 ? 'Switching saves about ' + fmt(diff) : 'Staying with the US supplier is still cheaper by ' + fmt(-diff);
+      s.style.color = diff > 0 ? 'var(--saved)' : 'var(--slate)';
+    };
+    sel.addEventListener('change', update); update();
+  });
+</script>
+{% endblock %}

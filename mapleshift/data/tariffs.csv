@@ -1,0 +1,85 @@
+hs_code,heading_text,description,rate_percent
+0402.10.10,"Milk and cream, concentrated or containing added sugar or other sweetening matter","In powder, granules or other solid forms, fat content not exceeding 1.5%: Within access commitment",50
+0402.21.11,"Milk and cream, concentrated or containing added sugar or other sweetening matter","In powder, fat content exceeding 1.5%, not sweetened: Milk: Within access commitment",50
+0402.91.10,"Milk and cream, concentrated or containing added sugar or other sweetening matter","Other: Not containing added sugar or other sweetening matter: Within access commitment",50
+0404.10.10,"Whey; products consisting of natural milk constituents","Whey and modified whey: Whey protein concentrate",50
+0404.10.90,"Whey; products consisting of natural milk constituents","Whey and modified whey: Other",50
+0406.10.10,Cheese and curd,"Fresh (unripened or uncured) cheese, including whey cheese, and curd: Within access commitment",25
+0406.20.11,Cheese and curd,"Grated or powdered cheese, of all kinds: Cheddar and Cheddar types: Within access commitment",25
+0406.30.10,Cheese and curd,"Processed cheese, not grated or powdered: Within access commitment",25
+0406.40.10,Cheese and curd,Blue-veined cheese and other cheese containing veins produced by Penicillium roqueforti: Within access commitment,25
+0406.90.11,Cheese and curd,Other cheese: Cheddar and Cheddar types: Within access commitment,25
+0406.90.21,Cheese and curd,Other cheese: Camembert and Camembert types: Within access commitment,25
+0406.90.31,Cheese and curd,Other cheese: Brie and Brie types: Within access commitment,25
+0406.90.41,Cheese and curd,Other cheese: Gouda and Gouda types: Within access commitment,25
+0406.90.61,Cheese and curd,Other cheese: Mozzarella and Mozzarella types: Within access commitment,25
+0406.90.71,Cheese and curd,Other cheese: Swiss/Emmental and Swiss/Emmental types: Within access commitment,25
+0406.90.93,Cheese and curd,"Other cheese: Other: Parmesan and Parmesan types, within access commitment",25
+0406.90.98,Cheese and curd,"Other cheese: Other: Other, within access commitment",25
+0409.00.00,Natural honey,Natural honey,50
+1703.10.90,Molasses resulting from the extraction or refining of sugar,Cane molasses: Other,50
+1901.20.11,"Malt extract; food preparations of flour, groats, meal, starch or malt extract … (mixes and doughs)","Mixes and doughs for bakers' wares of heading 19.05, packages not exceeding 11.34 kg: more than 25% butterfat, not for retail sale, within access commitment",50
+1901.20.19,"Malt extract; food preparations of flour, groats, meal, starch or malt extract … (mixes and doughs)","Mixes and doughs for the preparation of bakers' wares of heading 19.05: In packages of a weight not exceeding 11.34 kg each: Other",50
+1901.20.29,"Malt extract; food preparations of flour, groats, meal, starch or malt extract … (mixes and doughs)","Mixes and doughs for the preparation of bakers' wares of heading 19.05: In bulk or in packages exceeding 11.34 kg each: Other",50
+3303.00.00,Perfumes and toilet waters,Perfumes and toilet waters,50
+3304.10.00,"Beauty or make-up preparations and preparations for the care of the skin",Lip make-up preparations,50
+3304.20.00,"Beauty or make-up preparations and preparations for the care of the skin",Eye make-up preparations,50
+3304.30.00,"Beauty or make-up preparations and preparations for the care of the skin",Manicure or pedicure preparations,50
+3305.90.00,Preparations for use on the hair,Other,50
+3918.10.90,"Floor coverings of plastics, in rolls or tiles; wall or ceiling coverings of plastics",Of polymers of vinyl chloride: Other,50
+3919.10.99,"Self-adhesive plates, sheets, film, foil, tape, strip and other flat shapes, of plastics",In rolls of a width not exceeding 20 cm: Other: Other,50
+3923.21.90,"Articles for the conveyance or packing of goods, of plastics",Sacks and bags (including cones): Of polymers of ethylene: Other,50
+3924.10.00,"Tableware, kitchenware, other household articles and hygienic or toilet articles, of plastics",Tableware and kitchenware,50
+3924.90.00,"Tableware, kitchenware, other household articles and hygienic or toilet articles, of plastics",Other,50
+4402.90.10,Wood charcoal (including shell or nut charcoal),"Other: Wood charcoal (not including shell or nut charcoal), containing 10% or less by weight of binder",50
+4407.11.00,"Wood sawn or chipped lengthwise, of a thickness exceeding 6 mm",Coniferous: Of pine (Pinus spp.),25
+4407.12.00,"Wood sawn or chipped lengthwise, of a thickness exceeding 6 mm",Coniferous: Of fir (Abies spp.) and spruce (Picea spp.),25
+4407.19.00,"Wood sawn or chipped lengthwise, of a thickness exceeding 6 mm",Coniferous: Other,25
+4412.31.00,"Plywood, veneered panels and similar laminated wood","Other plywood, each ply not exceeding 6 mm: With at least one outer ply of tropical wood",50
+4412.33.00,"Plywood, veneered panels and similar laminated wood","Other plywood, each ply not exceeding 6 mm: outer ply of non-coniferous wood such as birch, maple, oak or walnut",50
+4412.39.00,"Plywood, veneered panels and similar laminated wood","Other plywood, each ply not exceeding 6 mm: Other, with both outer plies of coniferous wood",50
+4702.00.00,"Chemical wood pulp, dissolving grades","Chemical wood pulp, dissolving grades",50
+4803.00.00,"Toilet or facial tissue stock, towel or napkin stock and similar paper, in rolls or sheets",Toilet or facial tissue stock and similar household paper,50
+4804.39.00,"Uncoated kraft paper and paperboard, in rolls or sheets",Other kraft paper and paperboard weighing 150 g/m² or less: Other,25
+4810.13.00,"Paper and paperboard, coated with kaolin or other inorganic substances","Paper of a kind used for writing, printing or other graphic purposes: In rolls",50
+4811.90.00,"Paper, paperboard, cellulose wadding and webs, coated, impregnated, covered or printed","Other paper, paperboard, cellulose wadding and webs of cellulose fibres",50
+4817.10.00,"Envelopes, letter cards, plain postcards and correspondence cards, of paper or paperboard",Envelopes,50
+4818.10.00,"Toilet paper and similar household or sanitary paper articles",Toilet paper,25
+4818.20.00,"Toilet paper and similar household or sanitary paper articles","Handkerchiefs, cleansing or facial tissues and towels",25
+4818.30.00,"Toilet paper and similar household or sanitary paper articles",Tablecloths and serviettes,50
+4818.90.00,"Toilet paper and similar household or sanitary paper articles",Other,50
+4819.10.00,"Cartons, boxes, cases, bags and other packing containers, of paper or paperboard","Cartons, boxes and cases, of corrugated paper or paperboard",50
+4819.40.00,"Cartons, boxes, cases, bags and other packing containers, of paper or paperboard","Other sacks and bags, including cones",50
+4820.10.00,"Registers, account books, note books, diaries and similar articles of stationery","Registers, account books, note books, order books, receipt books, letter pads, memorandum pads, diaries and similar articles",50
+4820.30.00,"Registers, account books, note books, diaries and similar articles of stationery","Binders (other than book covers), folders and file covers",50
+4823.69.00,"Other paper, paperboard, cellulose wadding, cut to size or shape; other articles of paper","Trays, dishes, plates, cups and the like, of paper or paperboard: Other",50
+4911.91.00,"Other printed matter, including printed pictures and photographs","Other: Pictures, designs and photographs",50
+5701.10.10,"Carpets and other textile floor coverings, knotted",Of wool or fine animal hair: Machine knotted,25
+5702.31.00,"Carpets and other textile floor coverings, woven, not tufted or flocked","Other, of pile construction, not made up: Of wool or fine animal hair",25
+5703.21.00,"Carpets and other textile floor coverings (including turf), tufted",Of nylon or other polyamides: Turf,25
+5703.29.10,"Carpets and other textile floor coverings (including turf), tufted",Of nylon or other polyamides: Other: Machine tufted,25
+5703.39.10,"Carpets and other textile floor coverings (including turf), tufted",Of other man-made textile materials: Other: Machine tufted,50
+5704.10.00,"Carpets and other textile floor coverings, of felt","Tiles, having a maximum surface area of 0.3 m²",25
+5705.00.00,"Other carpets and other textile floor coverings, whether or not made up","Other carpets and other textile floor coverings",25
+6104.43.00,"Women's or girls' suits, dresses, skirts, trousers and shorts, knitted or crocheted",Dresses: Of synthetic fibres,50
+6109.10.00,"T-shirts, singlets and other vests, knitted or crocheted",Of cotton,50
+6110.20.00,"Jerseys, pullovers, cardigans, waistcoats and similar articles, knitted or crocheted",Of cotton,50
+6110.30.00,"Jerseys, pullovers, cardigans, waistcoats and similar articles, knitted or crocheted",Of man-made fibres,50
+6116.93.00,"Gloves, mittens and mitts, knitted or crocheted",Other: Of synthetic fibres,50
+6201.40.90,"Men's or boys' overcoats, anoraks (including ski-jackets), wind-jackets and similar articles",Of man-made fibres: Other,50
+6202.40.00,"Women's or girls' overcoats, anoraks (including ski-jackets), wind-jackets and similar articles",Of man-made fibres,50
+6203.11.00,"Men's or boys' suits, ensembles, jackets, blazers, trousers and shorts",Suits: Of wool or fine animal hair,50
+6204.43.00,"Women's or girls' suits, ensembles, jackets, dresses, skirts, trousers and shorts",Dresses: Of synthetic fibres,50
+6211.33.00,"Track suits, ski suits and swimwear; other garments","Other garments, men's or boys': Of man-made fibres",50
+6809.11.00,Articles of plaster or of compositions based on plaster,"Boards, sheets, panels, tiles and similar articles, not ornamented: Faced or reinforced with paper or paperboard only",50
+7010.90.00,"Carboys, bottles, flasks, jars, pots and other containers, of glass, for the conveyance or packing of goods",Other,50
+7206.10.00,Iron and non-alloy steel in ingots or other primary forms,Ingots,50
+7208.10.00,"Flat-rolled products of iron or non-alloy steel, width 600 mm or more, hot-rolled, not clad, plated or coated","In coils, not further worked than hot-rolled, with patterns in relief",50
+7208.90.00,"Flat-rolled products of iron or non-alloy steel, width 600 mm or more, hot-rolled, not clad, plated or coated",Other,50
+7209.15.00,"Flat-rolled products of iron or non-alloy steel, width 600 mm or more, cold-rolled, not clad, plated or coated","In coils, not further worked than cold-rolled: Of a thickness of 3 mm or more",50
+7210.30.00,"Flat-rolled products of iron or non-alloy steel, width 600 mm or more, clad, plated or coated",Electrolytically plated or coated with zinc,50
+7210.70.00,"Flat-rolled products of iron or non-alloy steel, width 600 mm or more, clad, plated or coated","Painted, varnished or coated with plastics",50
+7211.90.00,"Flat-rolled products of iron or non-alloy steel, width less than 600 mm, not clad, plated or coated",Other,50
+7212.40.00,"Flat-rolled products of iron or non-alloy steel, width less than 600 mm, clad, plated or coated","Painted, varnished or coated with plastics",50
+7213.10.00,"Bars and rods, hot-rolled, in irregularly wound coils, of iron or non-alloy steel","Containing indentations, ribs, grooves or other deformations produced during the rolling process",50
+7214.10.00,"Other bars and rods of iron or non-alloy steel, not further worked than forged or hot-rolled",Forged,50

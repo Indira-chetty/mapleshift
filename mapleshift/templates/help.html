@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Get expert help{% endblock %}
+{% block main %}
+<div class="wrap" style="max-width:900px">
+  <div class="page-head">
+    <h1>Talk to your broker</h1>
+    <p>When we're not sure, we don't guess. Here's where to get a real answer.</p>
+  </div>
+
+  <div class="card">
+    <form method="get" action="{{ url_for('help_page') }}" style="display:flex;gap:8px">
+      <label for="item" style="position:absolute;left:-9999px">Item you need help with</label>
+      <input type="text" id="item" name="item" value="{{ items[0] if items }}" placeholder="What item do you need help with? e.g. espresso machine parts">
+      <button class="btn btn-primary" type="submit"><i data-lucide="search" class="icon"></i>Find help</button>
+    </form>
+  </div>
+
+  {% if text %}
+  <div class="card" style="margin-top:16px">
+    <h2><i data-lucide="search-check" class="icon" style="vertical-align:-3px;color:var(--ink)"></i> What we found for: {{ items|join(', ') }}</h2>
+    <div style="white-space:pre-line">{{ text }}</div>
+    <p class="muted small" style="margin:12px 0 0">Found by live web search. These are options, not recommendations: check them yourself.</p>
+  </div>
+  {% elif items %}
+  <div class="note" style="margin-top:16px"><i data-lucide="info" class="icon"></i>
+    <div>Live search isn't available right now, so here are official places to start for <strong>{{ items|join(', ') }}</strong>.</div></div>
+  {% endif %}
+
+  <div class="grid g2" style="margin-top:16px">
+    {% for r in sources %}
+    <a class="card resource" href="{{ r.url }}" target="_blank" rel="noopener" style="color:inherit">
+      <div class="icon-bubble" style="margin:0"><i data-lucide="{{ r.icon or 'external-link' }}" class="icon"></i></div>
+      <div><h3 style="color:var(--ink)">{{ r.title }}</h3><p class="muted small" style="margin:0">{{ r.what }}</p></div>
+    </a>
+    {% endfor %}
+  </div>
+</div>
+{% endblock %}

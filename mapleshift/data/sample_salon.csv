@@ -1,0 +1,9 @@
+item,description,hs_code,quantity,unit_price,currency,made_in,supplier
+1,Lipstick assortment,3304.10.00,120,8.50,USD,United States,Glow Cosmetics Inc.
+2,Eye make-up palettes,3304.20.00,80,14.00,USD,United States,Glow Cosmetics Inc.
+3,Nail polish set,3304.30.00,150,4.25,USD,United States,ProNail Supply
+4,Perfume 50 ml,3303.00.00,36,42.00,USD,France,Glow Cosmetics Inc.
+5,Hair styling gel,3305.90.00,90,6.75,USD,United States,SalonPro Distributors
+6,Facial tissues (boxes),4818.20.00,200,1.90,USD,United States,PackRight Inc.
+7,Plastic salon storage trays,,40,11.00,USD,,SalonPro Distributors
+8,Professional hair dryers,8516.31.00,6,140.00,USD,United States,SalonPro Distributors

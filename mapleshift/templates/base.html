@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="{{ lang if lang else 'en' }}">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{% block title %}Shift the cost. Keep the margin.{% endblock %} | {{ app_name }}</title>
+  <link rel="icon" href="data:image/svg+xml,{{ logo_svg|urlencode }}">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Public+Sans:wght@400;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+<header class="topbar">
+  <div class="wrap">
+    <a class="brand" href="{{ url_for('home') }}" aria-label="MapleShift home">{% include "_logo.html" %}MapleShift</a>
+    <nav class="nav" aria-label="Main">
+      <a href="{{ url_for('results') }}" class="{{ 'on' if active=='results' }}"><i data-lucide="list-checks" class="icon"></i><span>Results</span></a>
+      <a href="{{ url_for('ask') }}" class="{{ 'on' if active=='ask' }}"><i data-lucide="message-square-text" class="icon"></i><span>Ask</span></a>
+      <a href="{{ url_for('help_page') }}" class="{{ 'on' if active=='help' }}"><i data-lucide="life-buoy" class="icon"></i><span>Your broker</span></a>
+      <a href="{{ url_for('report') }}" class="{{ 'on' if active=='report' }}"><i data-lucide="file-text" class="icon"></i><span>Report</span></a>
+      <a class="btn btn-primary btn-sm cta" href="{{ url_for('check') }}"><i data-lucide="scan-line" class="icon"></i><span>Check an invoice</span></a>
+    </nav>
+  </div>
+</header>
+
+<main>{% block main %}{% endblock %}</main>
+
+<footer>
+  <div class="wrap">
+    <a class="brand" href="{{ url_for('home') }}">{% include "_logo.html" %}MapleShift</a>
+    <p>Rates come from the <a href="{{ list_url }}" target="_blank" rel="noopener">{{ list_name }}</a>.
+      Every number here is an estimate, not legal or customs advice. Confirm with your broker.</p>
+  </div>
+</footer>
+
+<script src="https://unpkg.com/lucide@0.460.0/dist/umd/lucide.min.js"></script>
+<script>window.lucide && lucide.createIcons();</script>
+{% block scripts %}{% endblock %}
+</body>
+</html>

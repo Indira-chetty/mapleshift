@@ -1,0 +1,138 @@
+{% extends "base.html" %}
+{% block title %}Check your products{% endblock %}
+{% block main %}
+<div class="wrap">
+  <div class="page-head">
+    <h1>Check an invoice</h1>
+    <p>Drop in a supplier invoice or an accounting export, or check one product.</p>
+  </div>
+
+  <div class="card">
+    <div class="tabs" role="tablist">
+      <a href="{{ url_for('check') }}" class="{{ 'on' if tab=='invoice' }}"><i data-lucide="receipt" class="icon"></i>Invoice</a>
+      <a href="{{ url_for('check', tab='quick') }}" class="{{ 'on' if tab=='quick' }}"><i data-lucide="search" class="icon"></i>One item</a>
+    </div>
+
+    {% if error %}<div class="alert" role="alert"><i data-lucide="circle-alert" class="icon"></i>{{ error }}</div>{% endif %}
+
+    {% if tab == 'invoice' %}
+    <div class="grid g2" style="align-items:start">
+      <form method="post" action="{{ url_for('check_invoice') }}" enctype="multipart/form-data" id="upload-form">
+        <label for="invoice" class="drop" id="drop">
+          <div class="icon-bubble" style="margin:0 auto 12px"><i data-lucide="upload" class="icon"></i></div>
+          <strong>Drag your invoice here, or click to choose a file</strong>
+          <div class="muted small" id="file-name">CSV or Excel file (.csv, .xlsx), including QuickBooks and Xero exports</div>
+          <input id="invoice" name="invoice" type="file" accept=".csv,.xlsx" hidden>
+        </label>
+        <div class="btn-row" style="margin-top:16px">
+          <button class="btn btn-primary" type="submit"><i data-lucide="scan-line" class="icon"></i>Check an invoice</button>
+        </div>
+      </form>
+      <div class="stack">
+        <div class="note"><i data-lucide="lightbulb" class="icon"></i>
+          <div><strong>No invoice handy?</strong> Try a sample. Every tariff code is real; the businesses are made up.</div></div>
+        <div class="grid g2">
+          {% for key, sm in samples.items() %}
+          <form method="post" action="{{ url_for('check_sample') }}" style="height:100%">
+            <input type="hidden" name="sample" value="{{ key }}">
+            <button type="submit" class="card resource" style="width:100%;height:100%;text-align:left;cursor:pointer;border:0;font:inherit;padding:14px">
+              <div class="icon-bubble" style="margin:0;width:38px;height:38px"><i data-lucide="{{ sm[3] }}" class="icon"></i></div>
+              <div><strong style="color:var(--ink)">{{ sm[1] }}</strong><div class="muted small">{{ sm[2] }}</div></div>
+            </button>
+          </form>
+          {% endfor %}
+        </div>
+        <div>
+          <h3 style="margin-top:8px">What your file needs</h3>
+          <p class="muted small" style="margin-bottom:6px">Column names can vary. We understand common versions like "HS Code", "HTS" or "Qty".</p>
+          <ul class="muted small" style="margin:0;padding-left:18px">
+            <li><strong>description</strong> (required): what the item is</li>
+            <li><strong>hs_code</strong>: makes results more accurate</li>
+            <li><strong>quantity</strong>, <strong>unit_price</strong>, <strong>currency</strong> (USD or CAD)</li>
+            <li><strong>made_in</strong>: country where it was made</li>
+            <li><strong>supplier</strong></li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    {% else %}
+    <div class="grid g2" style="align-items:start">
+      <form method="post" action="{{ url_for('check_quick') }}">
+        <div class="field">
+          <label for="description">What is the product?</label>
+          <input type="text" id="description" name="description" placeholder="e.g. cotton t-shirts, honey, plywood"
+                 value="{{ form.description if form }}">
+        </div>
+        <div class="field">
+          <label for="hs_code">HS code <span class="muted" style="font-weight:400">(optional, more accurate)</span></label>
+          <input type="text" id="hs_code" name="hs_code" placeholder="e.g. 6109.10.00" value="{{ form.hs_code if form }}">
+        </div>
+        <div class="grid g2">
+          <div class="field">
+            <label for="made_in">Where was it made?</label>
+            <select id="made_in" name="made_in">
+              {% for c in ['United States','Mexico','Canada','China','Other',''] %}
+              <option value="{{ c }}" {{ 'selected' if form and form.made_in==c }}>{{ c or "I don't know" }}</option>
+              {% endfor %}
+            </select>
+          </div>
+          <div class="field">
+            <label for="value">Value</label>
+            <div style="display:flex;gap:6px">
+              <input type="text" id="value" name="value" placeholder="1000" value="{{ form.value if form }}">
+              <select name="currency" style="width:90px" aria-label="Currency">
+                <option {{ 'selected' if form and form.currency=='CAD' }}>CAD</option>
+                <option {{ 'selected' if form and form.currency=='USD' }}>USD</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <button class="btn btn-primary" type="submit"><i data-lucide="search" class="icon"></i>Check this item</button>
+      </form>
+
+      <div>
+        {% if quick %}
+          {% set q = quick %}
+          <div class="card" style="box-shadow:none;border:1px solid var(--line)">
+            <div class="effect {{ q.effect }}" style="font-size:1.1rem;margin-bottom:6px">
+              {% if q.effect == 'affected' %}<i data-lucide="circle-alert" class="icon" style="vertical-align:-4px"></i> Counter-tariff applies
+              {% elif q.effect == 'at_risk' %}<i data-lucide="circle-help" class="icon" style="vertical-align:-4px"></i> Might apply, needs checking
+              {% else %}<i data-lucide="circle-check" class="icon" style="vertical-align:-4px"></i> Not affected{% endif %}
+            </div>
+            <div class="stat"><div class="num {{ 'red' if q.effect=='affected' else 'amber' if q.effect=='at_risk' }}">
+              {% if q.rate %}{{ q.rate|int }}%{% else %}0%{% endif %}</div>
+              <div class="muted">Surtax on {{ q.value_cad|money }} CAD: <strong>{{ q.extra_cad|money }}</strong></div></div>
+            <p style="margin:12px 0 6px">{% set cls = 'Needs' if q.confidence=='Needs review' else q.confidence %}
+              <span class="pill {{ cls }}"><i data-lucide="{{ 'shield-check' if cls=='Verified' else 'gauge' if cls=='Estimated' else 'triangle-alert' }}" class="icon"></i>{{ q.confidence }}</span>
+              {% if q.match_code %}<a class="src" href="{{ list_url }}" target="_blank" rel="noopener"><i data-lucide="link" class="icon"></i>{{ q.match_code }}</a>{% endif %}</p>
+            <p class="why">{{ q.reason }}</p>
+            {% if q.match_desc %}<p class="small"><strong>Official description:</strong> {{ q.match_desc }}</p>{% endif %}
+            {% if q.candidates|length > 1 %}
+              <details class="tool"><summary><i data-lucide="list" class="icon" style="width:16px;height:16px"></i>Other possible matches</summary>
+                <ul class="small">{% for c in q.candidates %}<li>{{ c.hs_code }} at {{ c.rate|int }}%: {{ c.description }}</li>{% endfor %}</ul></details>
+            {% endif %}
+            {% if q.confidence == 'Needs review' %}
+              <a class="btn btn-ghost btn-sm" style="margin-top:10px" href="{{ url_for('help_page', item=q.description) }}"><i data-lucide="life-buoy" class="icon"></i>Get expert help</a>
+            {% endif %}
+          </div>
+        {% else %}
+          <div class="note"><i data-lucide="info" class="icon"></i><div>Describe it the way you would to a friend. Adding the HS code from your invoice gives a <strong>Verified</strong> result.</div></div>
+        {% endif %}
+      </div>
+    </div>
+    {% endif %}
+  </div>
+</div>
+{% endblock %}
+{% block scripts %}
+<script>
+  const drop = document.getElementById('drop'), input = document.getElementById('invoice'), nameEl = document.getElementById('file-name');
+  if (drop) {
+    input.addEventListener('change', () => { if (input.files[0]) nameEl.textContent = input.files[0].name; });
+    ['dragenter','dragover'].forEach(e => drop.addEventListener(e, ev => { ev.preventDefault(); drop.classList.add('over'); }));
+    ['dragleave','drop'].forEach(e => drop.addEventListener(e, ev => { ev.preventDefault(); drop.classList.remove('over'); }));
+    drop.addEventListener('drop', ev => { input.files = ev.dataTransfer.files; if (input.files[0]) nameEl.textContent = input.files[0].name; });
+  }
+</script>
+{% endblock %}
